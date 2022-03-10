@@ -4,7 +4,10 @@ using System.Text;
 
 namespace WordWhipperServer.Game
 {
-    enum SpaceAttributes
+    /// <summary>
+    /// A multiplier a board space can have
+    /// </summary>
+    enum BoardSpaceMultipliers
     {
         NONE,
         DOUBLE_LETTER,

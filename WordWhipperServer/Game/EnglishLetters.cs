@@ -5,10 +5,12 @@ using System.Text;
 namespace WordWhipperServer.Game
 {
     /// <summary>
-    /// A list of letters that can be played
+    /// A list of letters that can be played in the english language
     /// </summary>
-    enum Letters
+    enum EnglishLetters
     {
+        NULL,
+        ANY,
         A,
         B,
         C,
@@ -35,7 +37,5 @@ namespace WordWhipperServer.Game
         X,
         Y,
         Z,
-        ANY,
-        BLANK,
     }
 }

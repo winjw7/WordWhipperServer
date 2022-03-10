@@ -11,26 +11,39 @@ namespace WordWhipperServer.Game
     {
         private Guid m_id;
 
-        private const int MIN_PLAYERS = 2;
-        private const int MAX_PLAYERS = 4;
+        private const byte MIN_PLAYERS = 2;
+        private const byte MAX_PLAYERS = 4;
 
         private GameBoard m_board;
         private List<GamePlayer> m_players;
         private int m_maxPlayers;
 
+        private GameLanguages m_language;
+
         private List<GameFlags> m_gameFlags;
+        private List<char> m_tileBag;
+
+        /// <summary>
+        /// Initializes all of the lists and variables
+        /// </summary>
+        private void InitialSetup()
+        {
+            m_maxPlayers = MIN_PLAYERS;
+            m_board = new GameBoard();
+            m_players = new List<GamePlayer>();
+            m_gameFlags = new List<GameFlags>();
+            m_players = new List<GamePlayer>();
+            m_tileBag = new List<char>();
+            m_id = Guid.NewGuid();
+            m_language = GameLanguages.ENGLISH;
+        }
 
         /// <summary>
         /// Creates a game with default settings
         /// </summary>
         public Game()
         {
-            m_maxPlayers = MIN_PLAYERS;
-
-            m_board = new GameBoard();
-            m_players = new List<GamePlayer>();
-            m_gameFlags = new List<GameFlags>();
-            m_players = new List<GamePlayer>();
+            InitialSetup();
         }
 
         /// <summary>
@@ -45,12 +58,9 @@ namespace WordWhipperServer.Game
             if(playerCount > MAX_PLAYERS)
                 throw new Exception($"There must be at max {MAX_PLAYERS} players in a game!");
 
+            InitialSetup();
+
             m_maxPlayers = playerCount;
-
-            m_board = new GameBoard();
-            m_players = new List<GamePlayer>();
-
-            m_id = Guid.NewGuid();
             m_gameFlags = flags;
         }
 
@@ -102,6 +112,10 @@ namespace WordWhipperServer.Game
             return m_players.Count;
         }
 
+        /// <summary>
+        /// Checks whether or not this game has custom rules
+        /// </summary>
+        /// <returns>has custom rules</returns>
         public bool HasCustomRules()
         {
             return m_gameFlags.Count != 0;
@@ -118,6 +132,15 @@ namespace WordWhipperServer.Game
                 return false;
 
             return m_gameFlags.Contains(flag);
+        }
+
+        /// <summary>
+        /// Gets which language is being used for this game
+        /// </summary>
+        /// <returns>language</returns>
+        public GameLanguages GetLanguage()
+        {
+            return m_language;
         }
     }
 }

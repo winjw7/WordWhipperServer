@@ -11,7 +11,7 @@ namespace WordWhipperServer.Game
     class BoardSpace
     {
         private List<Zinger> m_zingers;
-        private char m_letter;
+        private byte m_letter;
         private bool m_isLocked;
         private BoardSpaceMultipliers m_mulitplier;
 
@@ -21,7 +21,7 @@ namespace WordWhipperServer.Game
         public BoardSpace(BoardSpaceMultipliers multi)
         {
             m_zingers = new List<Zinger>();
-            m_letter = '\0';
+            m_letter = 0;
             m_isLocked = false;
             m_mulitplier = multi;
         }
@@ -32,6 +32,15 @@ namespace WordWhipperServer.Game
         public void LockSpace()
         {
             m_isLocked = true;
+        }
+
+        /// <summary>
+        /// Updates a board multiplier
+        /// </summary>
+        /// <param name="multi">the new multiplier</param>
+        public void UpdateMultiplier(BoardSpaceMultipliers multi)
+        {
+            m_mulitplier = multi;
         }
 
         /// <summary>
@@ -77,7 +86,7 @@ namespace WordWhipperServer.Game
         /// Sets the letter in the space
         /// </summary>
         /// <param name="c">letter to set to</param>
-        public void SetLetter(char c)
+        public void SetLetter(byte c)
         {
             if (IsLocked())
                 throw new Exception("This tile is locked!");
@@ -89,7 +98,7 @@ namespace WordWhipperServer.Game
         /// Gets the letter in the board space
         /// </summary>
         /// <returns>letter</returns>
-        public char GetLetter()
+        public byte GetLetter()
         {
             return m_letter;
         }
@@ -100,7 +109,7 @@ namespace WordWhipperServer.Game
         /// <returns>letter</returns>
         public bool HasLetter()
         {
-            return m_letter != '\0';
+            return m_letter != 0;
         }
 
         /// <summary>

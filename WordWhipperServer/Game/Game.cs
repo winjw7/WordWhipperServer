@@ -20,7 +20,7 @@ namespace WordWhipperServer.Game
         private GameLanguages m_language;
 
         private List<GameFlags> m_gameFlags;
-        private List<int> m_tileBag;
+        private TileBag m_tileBag;
 
         /// <summary>
         /// Initializes all of the lists and variables
@@ -32,7 +32,6 @@ namespace WordWhipperServer.Game
             m_players = new List<GamePlayer>();
             m_gameFlags = new List<GameFlags>();
             m_players = new List<GamePlayer>();
-            m_tileBag = new List<int>();
             m_id = Guid.NewGuid();
             m_language = GameLanguages.ENGLISH;
         }
@@ -43,6 +42,7 @@ namespace WordWhipperServer.Game
         public Game()
         {
             InitialSetup();
+            m_tileBag = new TileBag(GameLanguages.ENGLISH);
         }
 
         /// <summary>
@@ -62,6 +62,8 @@ namespace WordWhipperServer.Game
             m_maxPlayers = playerCount;
             m_gameFlags = flags;
             m_language = lang;
+
+            m_tileBag = new TileBag(lang);
         }
 
         /// <summary>

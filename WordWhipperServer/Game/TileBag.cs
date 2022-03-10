@@ -10,15 +10,13 @@ namespace WordWhipperServer.Game
     /// </summary>
     class TileBag
     {
-        private List<int> m_tiles;
+        private Queue<int> m_tiles;
 
         /// <summary>
         /// Constructor for the class
         /// </summary>
         public TileBag(GameLanguages type)
         {
-            m_tiles = new List<int>();
-
             switch (type) {
                 case GameLanguages.ENGLISH:
                     Fill(new EnglishLetters());
@@ -29,21 +27,33 @@ namespace WordWhipperServer.Game
         }
 
         /// <summary>
+        /// Removes a letter from the tile bag and returns it
+        /// </summary>
+        /// <returns></returns>
+        public int DrawLetter()
+        {
+            return m_tiles.Dequeue();
+        }
+
+        /// <summary>
         /// Fills the tile bag
         /// </summary>
         private void Fill(Enum lang)
         {
+            List<int> tiles = new List<int>();
+
             foreach (int letter in Enum.GetValues(lang.GetType()))
             {
                 LetterDataAttribute letterData = EnumExtensions.GetAttribute<LetterDataAttribute>(lang);
 
                 for (int i = 0; i < letterData.TileBagAmount; i++)
                 {
-                    m_tiles.Add(letter);
+                    tiles.Add(letter);
                 }
             }
 
-            m_tiles.Shuffle();
+            tiles.Shuffle();
+            m_tiles = new Queue<int>(tiles);
         }
 
         /// <summary>

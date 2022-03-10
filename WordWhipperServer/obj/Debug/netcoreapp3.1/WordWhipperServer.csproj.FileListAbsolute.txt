@@ -1,0 +1,13 @@
+C:\Users\Justin\source\repos\WordWhipperServer\WordWhipperServer\obj\Debug\netcoreapp3.1\WordWhipperServer.csprojAssemblyReference.cache
+C:\Users\Justin\source\repos\WordWhipperServer\WordWhipperServer\obj\Debug\netcoreapp3.1\WordWhipperServer.AssemblyInfoInputs.cache
+C:\Users\Justin\source\repos\WordWhipperServer\WordWhipperServer\obj\Debug\netcoreapp3.1\WordWhipperServer.AssemblyInfo.cs
+C:\Users\Justin\source\repos\WordWhipperServer\WordWhipperServer\obj\Debug\netcoreapp3.1\WordWhipperServer.csproj.CoreCompileInputs.cache
+C:\Users\Justin\source\repos\WordWhipperServer\WordWhipperServer\bin\Debug\netcoreapp3.1\WordWhipperServer.exe
+C:\Users\Justin\source\repos\WordWhipperServer\WordWhipperServer\bin\Debug\netcoreapp3.1\WordWhipperServer.deps.json
+C:\Users\Justin\source\repos\WordWhipperServer\WordWhipperServer\bin\Debug\netcoreapp3.1\WordWhipperServer.runtimeconfig.json
+C:\Users\Justin\source\repos\WordWhipperServer\WordWhipperServer\bin\Debug\netcoreapp3.1\WordWhipperServer.runtimeconfig.dev.json
+C:\Users\Justin\source\repos\WordWhipperServer\WordWhipperServer\bin\Debug\netcoreapp3.1\WordWhipperServer.dll
+C:\Users\Justin\source\repos\WordWhipperServer\WordWhipperServer\bin\Debug\netcoreapp3.1\WordWhipperServer.pdb
+C:\Users\Justin\source\repos\WordWhipperServer\WordWhipperServer\obj\Debug\netcoreapp3.1\WordWhipperServer.dll
+C:\Users\Justin\source\repos\WordWhipperServer\WordWhipperServer\obj\Debug\netcoreapp3.1\WordWhipperServer.pdb
+C:\Users\Justin\source\repos\WordWhipperServer\WordWhipperServer\obj\Debug\netcoreapp3.1\WordWhipperServer.genruntimeconfig.cache

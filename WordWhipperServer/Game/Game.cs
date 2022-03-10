@@ -15,14 +15,29 @@ namespace WordWhipperServer.Game
         private const int MAX_PLAYERS = 4;
 
         private GameBoard m_board;
-        private List<GamePlayer> m_players = new List<GamePlayer>();
+        private List<GamePlayer> m_players;
         private int m_maxPlayers;
+
+        private List<GameFlags> m_gameFlags;
+
+        /// <summary>
+        /// Creates a game with default settings
+        /// </summary>
+        public Game()
+        {
+            m_maxPlayers = MIN_PLAYERS;
+
+            m_board = new GameBoard();
+            m_players = new List<GamePlayer>();
+            m_gameFlags = new List<GameFlags>();
+            m_players = new List<GamePlayer>();
+        }
 
         /// <summary>
         /// Creates a new game with a variable player amount
         /// </summary>
         /// <param name="playerCount">the amount of players</param>
-        public Game(int playerCount = 2)
+        public Game(List<GameFlags> flags, int playerCount = 2)
         {
             if (playerCount < MIN_PLAYERS)
                 throw new Exception($"There must be at least {MIN_PLAYERS} players in a game!");
@@ -36,6 +51,7 @@ namespace WordWhipperServer.Game
             m_players = new List<GamePlayer>();
 
             m_id = Guid.NewGuid();
+            m_gameFlags = flags;
         }
 
         /// <summary>
@@ -84,6 +100,24 @@ namespace WordWhipperServer.Game
         public int GetPlayerCount()
         {
             return m_players.Count;
+        }
+
+        public bool HasCustomRules()
+        {
+            return m_gameFlags.Count != 0;
+        }
+
+        /// <summary>
+        /// Checks whether a game has a custom flag
+        /// </summary>
+        /// <param name="flag">the flag to check</param>
+        /// <returns>true or false</returns>
+        public bool ContainsGameRule(GameFlags flag)
+        {
+            if (HasCustomRules())
+                return false;
+
+            return m_gameFlags.Contains(flag);
         }
     }
 }

@@ -13,15 +13,17 @@ namespace WordWhipperServer.Game
         private List<Zinger> m_zingers;
         private char m_letter;
         private bool m_isLocked;
+        private BoardSpaceMultipliers m_mulitplier;
 
         /// <summary>
         /// Constructor for a board space
         /// </summary>
-        public BoardSpace()
+        public BoardSpace(BoardSpaceMultipliers multi)
         {
             m_zingers = new List<Zinger>();
             m_letter = '\0';
             m_isLocked = false;
+            m_mulitplier = multi;
         }
 
         /// <summary>
@@ -99,6 +101,15 @@ namespace WordWhipperServer.Game
         public bool HasLetter()
         {
             return m_letter != '\0';
+        }
+
+        /// <summary>
+        /// Gets the multiplier on the space
+        /// </summary>
+        /// <returns></returns>
+        public BoardSpaceMultipliers GetMultiplier()
+        {
+            return m_mulitplier;
         }
     }
 }

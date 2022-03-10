@@ -157,5 +157,10 @@ namespace WordWhipperServer.Game
         {
             return m_language;
         }
+
+        public TileBag GetTileBag()
+        {
+            return m_tileBag;
+        }
     }
 }

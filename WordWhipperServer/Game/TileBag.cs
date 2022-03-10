@@ -36,13 +36,13 @@ namespace WordWhipperServer.Game
         {
             List<int> tiles = new List<int>();
 
-            foreach (int letter in Enum.GetValues(lang.GetType()))
+            foreach (Enum letter in Enum.GetValues(lang.GetType()))
             {
-                LetterDataAttribute letterData = EnumExtensions.GetAttribute<LetterDataAttribute>(lang);
+                LetterDataAttribute letterData = letter.GetAttribute<LetterDataAttribute>();
 
                 for (int i = 0; i < letterData.TileBagAmount; i++)
                 {
-                    tiles.Add(letter);
+                    tiles.Add((int) Enum.Parse(letter.GetType(), letter.ToString()));
                 }
             }
 
@@ -66,6 +66,22 @@ namespace WordWhipperServer.Game
         public bool IsEmpty()
         {
             return GetRemainingTileCount() == 0;
+        }
+
+        public override string ToString()
+        {
+            string str = "[";
+            int[] tileArray = m_tiles.ToArray();
+
+            for (int i = 0; i < GetRemainingTileCount(); i++)
+            {
+                str += Enum.GetName(typeof(EnglishLetters), tileArray[i]) + ",";
+            }
+
+            str = str.Remove(str.Length - 1);
+            str += "]";
+
+            return str;
         }
     }
 }

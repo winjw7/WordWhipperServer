@@ -20,6 +20,8 @@ namespace WordWhipperServer
 
             game = new GameInstance(flags, GameLanguages.ENGLISH);
             game.PrintBoardToConsole();
+
+            Console.WriteLine("Tile Bag: " + game.GetTileBag().ToString());
         }
     }
 }

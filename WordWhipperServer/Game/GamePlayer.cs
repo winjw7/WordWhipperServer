@@ -7,7 +7,7 @@ namespace WordWhipperServer.Game
     /// <summary>
     /// The player of a game
     /// </summary>
-    class GamePlayer
+    public class GamePlayer
     {
         private Guid m_id;
         private List<char> m_letters;

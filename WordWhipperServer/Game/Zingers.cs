@@ -7,7 +7,7 @@ namespace WordWhipperServer.Game
     /// <summary>
     /// A list of zinger types
     /// </summary>
-    enum Zingers
+    public enum Zingers
     {
         EXPLODE_LETTER,
         EXPLODE_RANDOM_LETTER,

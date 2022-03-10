@@ -7,7 +7,7 @@ namespace WordWhipperServer.Game
     /// <summary>
     /// A multiplier a board space can have
     /// </summary>
-    enum BoardSpaceMultipliers
+    public enum BoardSpaceMultipliers
     {
         NONE,
         DOUBLE_LETTER,

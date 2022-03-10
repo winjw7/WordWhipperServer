@@ -8,7 +8,7 @@ namespace WordWhipperServer.Game
     /// <summary>
     /// A spot on a game board
     /// </summary>
-    class BoardSpace
+    public class BoardSpace
     {
         private List<Zinger> m_zingers;
         private int m_letter;

@@ -7,7 +7,7 @@ namespace WordWhipperServer.Game
     /// <summary>
     /// Flags that can be toggled on a game
     /// </summary>
-    enum GameFlags
+    public enum GameFlags
     {
         /// <summary>
         /// Double word, tripple letter, etc are randomly placed around

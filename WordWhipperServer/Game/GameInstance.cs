@@ -6,7 +6,7 @@ namespace WordWhipperServer.Game
     /// <summary>
     /// An instance of a game
     /// </summary>
-    class Game
+    public class GameInstance
     {
         private Guid m_id;
 
@@ -39,7 +39,7 @@ namespace WordWhipperServer.Game
         /// <summary>
         /// Creates a game with default settings
         /// </summary>
-        public Game()
+        public GameInstance()
         {
             InitialSetup();
             m_tileBag = new TileBag(GameLanguages.ENGLISH);
@@ -49,7 +49,7 @@ namespace WordWhipperServer.Game
         /// Creates a new game with settings
         /// </summary>
         /// <param name="playerCount">the amount of players</param>
-        public Game(List<GameFlags> flags, GameLanguages lang, int playerCount = 2)
+        public GameInstance(List<GameFlags> flags, GameLanguages lang, int playerCount = 2)
         {
             if (playerCount < MIN_PLAYERS)
                 throw new Exception($"There must be at least {MIN_PLAYERS} players in a game!");

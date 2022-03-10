@@ -7,7 +7,7 @@ namespace WordWhipperServer.Util
     /// <summary>
     /// Helper class for lists
     /// </summary>
-    static class ListExtensions
+    public static class ListExtensions
     {
         private static Random rng = new Random();
 

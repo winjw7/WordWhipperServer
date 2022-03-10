@@ -7,7 +7,7 @@ namespace WordWhipperServer.Game
     /// <summary>
     /// An effect that can be played on a word
     /// </summary>
-    abstract class Zinger
+    public abstract class Zinger
     {
         private Guid m_owner;
         private bool m_activated;

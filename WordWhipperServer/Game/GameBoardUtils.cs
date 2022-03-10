@@ -6,7 +6,7 @@ using System.Text;
 
 namespace WordWhipperServer.Game
 {
-    class GameBoardUtils
+    public class GameBoardUtils
     {
         private static int m_tripleWordSpots;
         private static int m_doubleWordSpots;

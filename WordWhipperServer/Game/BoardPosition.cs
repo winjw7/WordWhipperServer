@@ -7,7 +7,7 @@ namespace WordWhipperServer.Game
     /// <summary>
     /// A position in the board (x,y)
     /// </summary>
-    class BoardPosition
+    public class BoardPosition
     {
         private int m_x;
         private int m_y;

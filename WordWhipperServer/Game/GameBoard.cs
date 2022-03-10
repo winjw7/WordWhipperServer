@@ -5,7 +5,7 @@ namespace WordWhipperServer.Game
     /// <summary>
     /// A board associated with a game
     /// </summary>
-    class GameBoard
+    public class GameBoard
     {
         private static int BOARD_WIDTH = 15;
         private static int BOARD_HEIGHT = 15;

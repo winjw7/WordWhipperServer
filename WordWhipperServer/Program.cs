@@ -1,4 +1,5 @@
 ﻿using System;
+using WordWhipperServer.Game;
 
 namespace WordWhipperServer
 {
@@ -6,7 +7,7 @@ namespace WordWhipperServer
     {
         static void Main(string[] args)
         {
-
+            GameInstance game = new GameInstance();
             
         }
     }

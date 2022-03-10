@@ -29,7 +29,6 @@ namespace WordWhipperServer.Game
                 new BoardPosition(0, 14),
 
                 new BoardPosition(7, 0),
-                new BoardPosition(7, 7),
                 new BoardPosition(7, 14),
 
                 new BoardPosition(14, 0),
@@ -47,6 +46,8 @@ namespace WordWhipperServer.Game
 
                 new BoardPosition(3, 3),
                 new BoardPosition(3, 11),
+
+                new BoardPosition(7, 7),
 
                 new BoardPosition(4, 4),
                 new BoardPosition(4, 10),

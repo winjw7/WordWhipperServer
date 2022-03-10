@@ -11,12 +11,14 @@ namespace WordWhipperServer.Game
     public class TileBag
     {
         private Queue<int> m_tiles;
+        private GameLanguages m_lang;
 
         /// <summary>
         /// Constructor for the class
         /// </summary>
         public TileBag(GameLanguages type)
         {
+            m_lang = type;
             Fill(type.GetAttribute<LanguageAttribute>().GetLangEnum());
         }
 
@@ -73,9 +75,11 @@ namespace WordWhipperServer.Game
             string str = "[";
             int[] tileArray = m_tiles.ToArray();
 
+            Type langEnumType = m_lang.GetAttribute<LanguageAttribute>().GetLangEnum().GetType();
+
             for (int i = 0; i < GetRemainingTileCount(); i++)
             {
-                str += Enum.GetName(typeof(EnglishLetters), tileArray[i]) + ",";
+                str += Enum.GetName(langEnumType, tileArray[i]) + ",";
             }
 
             str = str.Remove(str.Length - 1);

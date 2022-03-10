@@ -44,6 +44,6 @@ namespace WordWhipperServer.Game
         /// Gets the type of Zinger it is
         /// </summary>
         /// <returns>Zinger Type</returns>
-        public abstract Zingers GetZingerType();
+        public abstract ZingerTypes GetZingerType();
     }
 }

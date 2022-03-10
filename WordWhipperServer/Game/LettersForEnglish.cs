@@ -7,7 +7,7 @@ namespace WordWhipperServer.Game
     /// <summary>
     /// A list of letters that can be played in the english language
     /// </summary>
-    public enum EnglishLetters
+    public enum LettersForEnglish
     {
         [LetterData(TileBagAmount = 0, Value = 0)]
         NULL,

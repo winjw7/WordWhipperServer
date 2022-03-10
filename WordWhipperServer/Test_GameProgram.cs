@@ -4,8 +4,15 @@ using WordWhipperServer.Game;
 
 namespace WordWhipperServer
 {
-    class Program
+    /// <summary>
+    /// Tests the program for basic game functions
+    /// </summary>
+    class Test_GameProgram
     {
+        /// <summary>
+        /// Runs tests
+        /// </summary>
+        /// <param name="args"></param>
         static void Main(string[] args)
         {
             Console.WriteLine("Default Game Board:");

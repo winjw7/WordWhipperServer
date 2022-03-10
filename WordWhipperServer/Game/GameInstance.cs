@@ -22,6 +22,10 @@ namespace WordWhipperServer.Game
         private List<GameFlags> m_gameFlags;
         private TileBag m_tileBag;
 
+        private GameStatus m_status;
+
+        private int m_turnIndex = 0;
+
         /// <summary>
         /// Initializes all of the lists and variables
         /// </summary>
@@ -33,6 +37,7 @@ namespace WordWhipperServer.Game
             m_players = new List<GamePlayer>();
             m_id = Guid.NewGuid();
             m_language = GameLanguages.ENGLISH;
+            m_status = GameStatus.WAITING_FOR_PLAYERS_TO_ACCEPT;
         }
 
         /// <summary>
@@ -67,6 +72,9 @@ namespace WordWhipperServer.Game
                 m_board = new GameBoard(GetID());
             else
                 m_board = new GameBoard();
+
+            if (flags.Contains(GameFlags.RANDOM_START))
+                m_turnIndex = new Random().Next(0, MAX_PLAYERS);
 
             m_tileBag = new TileBag(lang);
         }
@@ -158,9 +166,34 @@ namespace WordWhipperServer.Game
             return m_language;
         }
 
+        /// <summary>
+        /// Gets the tile bag for this game
+        /// </summary>
+        /// <returns>tile bag</returns>
         public TileBag GetTileBag()
         {
             return m_tileBag;
+        }
+
+        /// <summary>
+        /// Gets the status of the game
+        /// </summary>
+        /// <returns>status</returns>
+        public GameStatus GetStatus()
+        {
+            return m_status;
+        }
+
+        /// <summary>
+        /// Gets the id of the player who is up
+        /// </summary>
+        /// <returns></returns>
+        public Guid GetPlayersTurnID()
+        {
+            if (m_players.Count <= m_turnIndex - 1)
+                throw new Exception("The player who is starting isn't in the game yet!");
+
+            return m_players[m_turnIndex].GetID();
         }
     }
 }

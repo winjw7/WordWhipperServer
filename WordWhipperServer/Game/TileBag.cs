@@ -23,6 +23,17 @@ namespace WordWhipperServer.Game
         }
 
         /// <summary>
+        /// Constructor for a tile bag with a tile set already created
+        /// </summary>
+        /// <param name="q">tiles</param>
+        /// <param name="lang">language</param>
+        public TileBag(Queue<int> q, GameLanguages lang)
+        {
+            m_lang = lang;
+            m_tiles = q;
+        }
+
+        /// <summary>
         /// Removes a letter from the tile bag and returns it
         /// </summary>
         /// <returns></returns>
@@ -48,6 +59,16 @@ namespace WordWhipperServer.Game
                 }
             }
 
+            tiles.Shuffle();
+            m_tiles = new Queue<int>(tiles);
+        }
+
+        /// <summary>
+        /// Shuffles the tile bag, call if put tiles back in
+        /// </summary>
+        private void Shuffle()
+        {
+            List<int> tiles = new List<int>(m_tiles);
             tiles.Shuffle();
             m_tiles = new Queue<int>(tiles);
         }

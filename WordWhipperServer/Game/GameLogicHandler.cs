@@ -22,7 +22,7 @@ namespace WordWhipperServer.Game
         /// <param name="start">start pos of word</param>
         /// <param name="end">end pos of word</param>
         /// <returns>true or exception</returns>
-        public static bool CanPlayMove(GameInstance game, Guid playerID, Dictionary<BoardPosition, int> m_pieces, List<BoardPosition> m_blankSpots)
+        private static bool CanPlayMove(GameInstance game, Guid playerID, Dictionary<BoardPosition, int> m_pieces, List<BoardPosition> m_blankSpots)
         {
             if (!game.CanPlayMoveNow(playerID))
                 throw new Exception("This player can't make a move right now!");
@@ -30,14 +30,27 @@ namespace WordWhipperServer.Game
             if (game.IsFirstTurn() && m_pieces.Keys.Where(x => x.GetX() == GameBoard.BOARD_CENTER_X && x.GetY() == GameBoard.BOARD_CENTER_Y).Count() == 0)
                 throw new Exception("First move must be placed in middle!");
 
-            if(!game.GetCurrentPlayerTiles().ContainsAllItems(m_pieces.Values.ToList()))
-                throw new Exception("The player tried to make a move with a piece they don't have!");
+            //if(!game.GetCurrentPlayerTiles().ContainsAllItems(m_pieces.Values.ToList()))
+                //throw new Exception("The player tried to make a move with a piece they don't have!");
 
             int matchX = m_pieces.Keys.First().GetX();
             int matchY = m_pieces.Keys.First().GetY();
 
-            if (m_pieces.Keys.Where(x => x.GetX() == matchX).Count() != m_pieces.Keys.Count() && m_pieces.Keys.Where(x => x.GetY() == matchY).Count() != m_pieces.Keys.Count())
+            bool horizontalWord = m_pieces.Keys.Where(x => x.GetX() == matchX).Count() == m_pieces.Keys.Count();
+            bool verticalWord = m_pieces.Keys.Where(x => x.GetY() == matchY).Count() == m_pieces.Keys.Count();
+
+            if (!horizontalWord && !verticalWord)
                 throw new Exception("Tiles weren't put in a line!");
+
+            int horzLength = m_pieces.Keys.Max(x => x.GetY()) - m_pieces.Keys.Min(x => x.GetY()) + 1;
+
+            if (horizontalWord && (horzLength != m_pieces.Count()))
+                throw new Exception("There is a space in the line!");
+
+            int vertWidth = m_pieces.Keys.Max(x => x.GetX()) - m_pieces.Keys.Min(x => x.GetX()) + 1;
+
+            if (verticalWord && (vertWidth != m_pieces.Count()))
+                throw new Exception("There is a space in the line!");
 
             GameBoard clonedBoard = game.GetBoard().DeepCopy(game.GetID());
 
@@ -54,6 +67,40 @@ namespace WordWhipperServer.Game
             return true;
         }
 
+        /// <summary>
+        /// Executes a move
+        /// </summary>
+        /// <param name="Game">The game in which the move is happening</param>
+        /// <param name="playerID">the player trying to move</param>
+        /// <param name="m_pieces">the pieces they used</param>
+        /// <param name="start">start pos of word</param>
+        /// <param name="end">end pos of word</param>
+        /// <returns>true or exception</returns>
+        public static void ExecuteMove(GameInstance game, Guid playerID, Dictionary<BoardPosition, int> m_pieces, List<BoardPosition> m_blankSpots)
+        {
+            if (!CanPlayMove(game, playerID, m_pieces, m_blankSpots)) //will throw exception
+                return;
+
+            foreach (BoardPosition pos in m_pieces.Keys)
+            {
+                game.GetBoard().GetBoardSpace(pos.GetX(), pos.GetY()).SetLetter(m_pieces[pos], m_blankSpots.Contains(pos));
+            }
+
+            List<PlayedWord> playedWords = GetPlayedWords(game.GetBoard(), m_pieces, game.GetLanguage());
+
+            int scoreToAdd = 0;
+            playedWords.ForEach(x => scoreToAdd += x.GetMultiplierScore());
+
+            game.PlayerDidTurn(m_pieces.Values.ToList(), scoreToAdd);
+        }
+
+        /// <summary>
+        /// Gets played words from a dictionary of locations and pieces placed
+        /// </summary>
+        /// <param name="board"></param>
+        /// <param name="m_pieces"></param>
+        /// <param name="lang"></param>
+        /// <returns></returns>
         private static List<PlayedWord> GetPlayedWords(GameBoard board, Dictionary<BoardPosition, int> m_pieces, GameLanguages lang)
         {
             Enum langEnum = lang.GetAttribute<LanguageAttribute>().GetLangEnum();
@@ -87,24 +134,26 @@ namespace WordWhipperServer.Game
                         Enum letterEnum = (Enum) Enum.ToObject(langEnum.GetType(), letterNum);
                         LetterDataAttribute data = letterEnum.GetAttribute<LetterDataAttribute>();
 
-                        rawScore += data.Value;
+                        int value = space.IsBlankTile() ? 0 : data.Value;
+
+                        rawScore += value;
 
                         switch (space.GetMultiplier()) {
                             case BoardSpaceMultipliers.NONE:
-                                multiplierScore += data.Value;
+                                multiplierScore += value;
                                 break;
                             case BoardSpaceMultipliers.DOUBLE_LETTER:
-                                multiplierScore += (data.Value * 2);
+                                multiplierScore += (value * 2);
                                 break;
                             case BoardSpaceMultipliers.TRIPLE_LETTER:
-                                multiplierScore += (data.Value * 3);
+                                multiplierScore += (value * 3);
                                 break;
                             case BoardSpaceMultipliers.DOUBLE_WORD:
-                                multiplierScore += data.Value;
+                                multiplierScore += value;
                                 wordMultipliers.Add(2);
                                 break;
                             case BoardSpaceMultipliers.TRIPLE_WORD:
-                                multiplierScore += data.Value;
+                                multiplierScore += value;
                                 wordMultipliers.Add(3);
                                 break;
                         }
@@ -142,9 +191,11 @@ namespace WordWhipperServer.Game
 
             for(int x = 0; x < 2; x++)
             {
+                List<BoardPosition> word = new List<BoardPosition>();
+
                 for (int i = 0; i < 2; i++)
                 {
-                    List<BoardPosition> word = new List<BoardPosition>();
+                    
                     BoardPosition current = playedPos;
                     int add = 0;
 

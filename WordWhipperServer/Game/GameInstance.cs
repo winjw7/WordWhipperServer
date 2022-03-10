@@ -261,5 +261,44 @@ namespace WordWhipperServer.Game
         {
             return m_board;
         }
+
+        /// <summary>
+        /// Sets the turn to the next player
+        /// </summary>
+        private void NextPlayersTurn()
+        {
+            m_whichPlayerTurn = ((m_whichPlayerTurn + 1) % GetMaxPlayers());
+            m_turnNumber++;
+
+            CheckEndGame();
+        }
+
+        /// <summary>
+        /// A player did a turn
+        /// </summary>
+        public void PlayerDidTurn(List<int> tiles, int scoreToAdd)
+        {
+            tiles.ForEach(x => m_players[m_whichPlayerTurn].RemoveLetter(x));
+
+            for(int i = 0; i < tiles.Count; i++)
+            {
+                if (GetTileBag().IsEmpty())
+                    break;
+
+                m_players[m_whichPlayerTurn].AddLetter(GetTileBag().DrawLetter());
+            }
+
+            m_players[m_whichPlayerTurn].AddScore(scoreToAdd);
+
+            NextPlayersTurn();
+        }
+
+        /// <summary>
+        /// Checks to see if the game is over because can make no moves / both players pass
+        /// </summary>
+        private void CheckEndGame()
+        {
+
+        }
     }
 }

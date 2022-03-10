@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "fsDiAKvMyzakIQJCv9Qr4Ff7WtxSkwf3+0bwm0YlR2CKlGTVI8/6c7quIQmqHGU451sbdLKvjE1UtK5uCjqbbQ==",
+  "dgSpecHash": "WULP29LpYG5CbUdJ9KphNgScPpe+9XYL7FHpHwm5nAm/epqSnUc6qLMQtZC8UiFsDajkAxrDE8X/OsHZOKb3iw==",
   "success": true,
   "projectFilePath": "C:\\Users\\Justin\\source\\repos\\WordWhipperServer\\WordWhipperServer\\WordWhipperServer.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\Justin\\.nuget\\packages\\morelinq\\3.3.2\\morelinq.3.3.2.nupkg.sha512"
+  ],
   "logs": []
 }

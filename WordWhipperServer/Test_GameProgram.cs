@@ -33,8 +33,10 @@ namespace WordWhipperServer
             Console.WriteLine("\nIs valid word test for english `dog`: " + GameUtils.IsValidWord(GameLanguages.ENGLISH, "dog"));*/
 
             Guid playerOneID = Guid.NewGuid();
+            Guid playerTwoID = Guid.NewGuid();
+
             game.AddPlayer(playerOneID);
-            game.AddPlayer(Guid.NewGuid());
+            game.AddPlayer(playerTwoID);
 
             Dictionary<BoardPosition, int> playedTiles = new Dictionary<BoardPosition, int>();
             playedTiles.Add(new BoardPosition(7, 7), (int) LettersForEnglish.H);
@@ -42,13 +44,22 @@ namespace WordWhipperServer
 
             try
             {
-                GameLogicHandler.CanPlayMove(game, playerOneID, playedTiles, new List<BoardPosition>());
-                Console.WriteLine("Can play move!");
+                GameLogicHandler.ExecuteMove(game, playerOneID, playedTiles, new List<BoardPosition>());
+                Console.WriteLine("Executed Move!");
+                game.PrintBoardToConsole();
+
+                playedTiles.Clear();
+                playedTiles.Add(new BoardPosition(7, 6), (int)LettersForEnglish.O);
+                playedTiles.Add(new BoardPosition(6, 6), (int)LettersForEnglish.Y);
+
+                GameLogicHandler.ExecuteMove(game, playerTwoID, playedTiles, new List<BoardPosition>());
+                Console.WriteLine("Executed Move!");
+                game.PrintBoardToConsole();
             }
 
             catch(Exception ex)
             {
-                Console.WriteLine("Can't play move! Reason: " + ex.Message);
+                Console.WriteLine("Error! Reason: " + ex.Message);
             }
            
         }

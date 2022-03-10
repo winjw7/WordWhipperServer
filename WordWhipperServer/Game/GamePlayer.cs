@@ -40,6 +40,18 @@ namespace WordWhipperServer.Game
         }
 
         /// <summary>
+        /// Removes a letter to a player
+        /// </summary>
+        /// <param name="letter"></param>
+        public void RemoveLetter(int letter)
+        {
+            //if (!m_letters.Contains(letter))
+                //throw new Exception("This player doesn't contain the letter that's trying to be removed!");
+
+            m_letters.Remove(letter);
+        }
+
+        /// <summary>
         /// Adds a letter to a player
         /// </summary>
         /// <param name="letter"></param>
@@ -112,6 +124,15 @@ namespace WordWhipperServer.Game
         public List<int> GetLetters()
         {
             return m_letters;
+        }
+
+        /// <summary>
+        /// Adds score to a player
+        /// </summary>
+        /// <param name="scoreToAdd">score</param>
+        public void AddScore(int scoreToAdd)
+        {
+            m_score += scoreToAdd;
         }
     }
 }

@@ -11,6 +11,8 @@ namespace WordWhipperServer.Game
     /// </summary>
     public static class GameLogicHandler
     {
+        public static int BLANK_TILE_NUMBER = 1;
+
         /// <summary>
         /// Checks if a player can make a move
         /// </summary>
@@ -20,7 +22,7 @@ namespace WordWhipperServer.Game
         /// <param name="start">start pos of word</param>
         /// <param name="end">end pos of word</param>
         /// <returns>true or exception</returns>
-        public static bool CanPlayMove(GameInstance game, Guid playerID, List<int> m_pieces, List<int> m_blankReplacements, BoardPosition start, BoardPosition end)
+        public static bool CanPlayMove(GameInstance game, Guid playerID, List<int> m_pieces, Queue<int> m_blankReplacements, BoardPosition start, BoardPosition end)
         {
             if (!game.CanPlayMoveNow(playerID))
                 throw new Exception("This player can't make a move right now!");
@@ -42,7 +44,18 @@ namespace WordWhipperServer.Game
             if(start.GetX() <= end.GetX() || start.GetY() <= end.GetY())
                 throw new Exception("End was equal to or before start!");
 
+            //swap blank tiles now
+            if (m_blankReplacements.Count > 0)
+            {
+                for(int i = 0; i < m_pieces.Count; i++)
+                {
+                    if (m_pieces[i] == BLANK_TILE_NUMBER)
+                        m_pieces[i] = m_blankReplacements.Dequeue();
 
+                    if (m_blankReplacements.Count == 0)
+                        break;
+                }
+            }
 
             //if (!GameUtils.IsValidWord(game.GetLanguage(), word))
                 //throw new Exception("Played word isn't valid!");

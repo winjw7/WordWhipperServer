@@ -102,10 +102,13 @@ namespace WordWhipperServer.Game
         /// <param name="id"></param>
         public void AddPlayer(Guid id)
         {
-            if (IsFull())
+            if (!IsJoinable())
                 throw new Exception("This game is already full!");
 
             m_players.Add(new GamePlayer(id));
+
+            if (IsFull())
+                m_status = GameStatus.PENDING_PLAYER_MOVE;
         }
 
         /// <summary>
@@ -124,6 +127,15 @@ namespace WordWhipperServer.Game
         public bool IsFull()
         {
             return GetPlayerCount() == GetMaxPlayers();
+        }
+
+        /// <summary>
+        /// Returns whether this game is joinable or not
+        /// </summary>
+        /// <returns>joinable</returns>
+        public bool IsJoinable()
+        {
+            return !IsFull() && m_status == GameStatus.WAITING_FOR_PLAYERS_TO_ACCEPT;
         }
 
         /// <summary>

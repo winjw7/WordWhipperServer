@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace WordWhipperServer
+namespace WordWhipperServer.Game
 {
     /// <summary>
     /// A list of letters that can be played

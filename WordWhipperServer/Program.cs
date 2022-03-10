@@ -6,7 +6,8 @@ namespace WordWhipperServer
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+
+            
         }
     }
 }

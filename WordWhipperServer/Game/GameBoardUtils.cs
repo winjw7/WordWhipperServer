@@ -20,6 +20,8 @@ namespace WordWhipperServer.Game
         /// </summary>
         static GameBoardUtils()
         {
+            m_defaultMultipliers = new Dictionary<BoardPosition, BoardSpaceMultipliers>();
+
             List<BoardPosition> tripleWordSpots = new List<BoardPosition>
             {
                 new BoardPosition(0, 0),

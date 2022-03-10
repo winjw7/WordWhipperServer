@@ -1,4 +1,5 @@
 ﻿using System;
+using WordWhipperServer.Util;
 
 namespace WordWhipperServer.Game
 {
@@ -98,6 +99,46 @@ namespace WordWhipperServer.Game
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Prints the board to console
+        /// </summary>
+        public void PrintToConsole(GameLanguages lang)
+        {
+            for (int x = 0; x < BOARD_WIDTH; x++)
+            {
+                for (int y = 0; y < BOARD_HEIGHT; y++)
+                {
+                    BoardSpace space = GetBoardSpace(x, y);
+
+                    switch (space.GetMultiplier()) {
+                        case BoardSpaceMultipliers.NONE:
+                            Console.ForegroundColor = ConsoleColor.Gray;
+                            break;
+                        case BoardSpaceMultipliers.DOUBLE_LETTER:
+                            Console.ForegroundColor = ConsoleColor.Blue;
+                            break;
+                        case BoardSpaceMultipliers.DOUBLE_WORD:
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            break;
+                        case BoardSpaceMultipliers.TRIPLE_LETTER:
+                            Console.ForegroundColor = ConsoleColor.DarkBlue;
+                            break;
+                        case BoardSpaceMultipliers.TRIPLE_WORD:
+                            Console.ForegroundColor = ConsoleColor.DarkRed;
+                            break;
+                    }
+
+
+                    string letter = !space.HasLetter() ? "." : Enum.GetName(lang.GetAttribute<LanguageAttribute>().GetLangEnum().GetType(), space.GetLetter());
+                    Console.Write("[" + letter + "] ");
+                }
+
+                Console.WriteLine();
+            }
+
+            Console.ForegroundColor = ConsoleColor.Gray;
         }
     }
 }

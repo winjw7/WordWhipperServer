@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using WordWhipperServer.Game;
 
 namespace WordWhipperServer
@@ -7,8 +8,18 @@ namespace WordWhipperServer
     {
         static void Main(string[] args)
         {
-            GameInstance game = new GameInstance();
+            Console.WriteLine("Default Game Board:");
             
+            GameInstance game = new GameInstance();
+            game.PrintBoardToConsole();
+
+            Console.WriteLine("\nRandom Game Board:");
+
+            List<GameFlags> flags = new List<GameFlags>();
+            flags.Add(GameFlags.RANDOM_BOARD_MULTIPLIERS);
+
+            game = new GameInstance(flags, GameLanguages.ENGLISH);
+            game.PrintBoardToConsole();
         }
     }
 }

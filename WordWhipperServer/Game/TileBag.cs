@@ -8,7 +8,7 @@ namespace WordWhipperServer.Game
     /// <summary>
     /// a bag that is used for a game
     /// </summary>
-    class TileBag
+    public class TileBag
     {
         private Queue<int> m_tiles;
 
@@ -17,13 +17,7 @@ namespace WordWhipperServer.Game
         /// </summary>
         public TileBag(GameLanguages type)
         {
-            switch (type) {
-                case GameLanguages.ENGLISH:
-                    Fill(new EnglishLetters());
-                    break;
-                default:
-                    throw new Exception("This language isn't setup properly! Create an enum for it and add to tile bag!");
-            }
+            Fill(type.GetAttribute<LanguageAttribute>().GetLangEnum());
         }
 
         /// <summary>

@@ -39,5 +39,20 @@ namespace WordWhipperServer.Game
         {
             return m_y;
         }
+
+        public override bool Equals(object other)
+        {
+            if (other.GetType() != typeof(BoardPosition))
+                return false;
+
+            BoardPosition otherPos = (BoardPosition)other;
+
+            return otherPos.GetHashCode().Equals(this.GetHashCode());
+        }
+
+        public override int GetHashCode()
+        {
+            return (GetX() + ":" + GetY()).GetHashCode();
+        }
     }
 }

@@ -28,7 +28,6 @@ namespace WordWhipperServer.Game
         private void InitialSetup()
         {
             m_maxPlayers = MIN_PLAYERS;
-            m_board = new GameBoard();
             m_players = new List<GamePlayer>();
             m_gameFlags = new List<GameFlags>();
             m_players = new List<GamePlayer>();
@@ -42,6 +41,7 @@ namespace WordWhipperServer.Game
         public GameInstance()
         {
             InitialSetup();
+            m_board = new GameBoard();
             m_tileBag = new TileBag(GameLanguages.ENGLISH);
         }
 
@@ -63,7 +63,20 @@ namespace WordWhipperServer.Game
             m_gameFlags = flags;
             m_language = lang;
 
+            if (flags.Contains(GameFlags.RANDOM_BOARD_MULTIPLIERS))
+                m_board = new GameBoard(GetID());
+            else
+                m_board = new GameBoard();
+
             m_tileBag = new TileBag(lang);
+        }
+
+        /// <summary>
+        /// Prints the board to console
+        /// </summary>
+        public void PrintBoardToConsole()
+        {
+            m_board.PrintToConsole(m_language);
         }
 
         /// <summary>

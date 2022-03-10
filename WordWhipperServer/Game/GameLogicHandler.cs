@@ -22,46 +22,167 @@ namespace WordWhipperServer.Game
         /// <param name="start">start pos of word</param>
         /// <param name="end">end pos of word</param>
         /// <returns>true or exception</returns>
-        public static bool CanPlayMove(GameInstance game, Guid playerID, List<int> m_pieces, Queue<int> m_blankReplacements, BoardPosition start, BoardPosition end)
+        public static bool CanPlayMove(GameInstance game, Guid playerID, Dictionary<BoardPosition, int> m_pieces, List<BoardPosition> m_blankSpots)
         {
             if (!game.CanPlayMoveNow(playerID))
                 throw new Exception("This player can't make a move right now!");
 
-            if (game.IsFirstTurn()
-                && (!Enumerable.Range(start.GetX(), end.GetX() - start.GetX() + 1).Contains(GameBoard.BOARD_CENTER_X)
-                || !Enumerable.Range(start.GetY(), end.GetY() - start.GetY() + 1).Contains(GameBoard.BOARD_CENTER_Y)))
+            if (game.IsFirstTurn() && m_pieces.Keys.Where(x => x.GetX() == GameBoard.BOARD_CENTER_X && x.GetY() == GameBoard.BOARD_CENTER_Y).Count() == 0)
                 throw new Exception("First move must be placed in middle!");
 
-            if(!game.GetCurrentPlayerTiles().ContainsAllItems(m_pieces))
+            if(!game.GetCurrentPlayerTiles().ContainsAllItems(m_pieces.Values.ToList()))
                 throw new Exception("The player tried to make a move with a piece they don't have!");
 
-            if (start.GetX() != end.GetX() && start.GetY() != end.GetY())
+            int matchX = m_pieces.Keys.First().GetX();
+            int matchY = m_pieces.Keys.First().GetY();
+
+            if (m_pieces.Keys.Where(x => x.GetX() == matchX).Count() != m_pieces.Keys.Count() && m_pieces.Keys.Where(x => x.GetY() == matchY).Count() != m_pieces.Keys.Count())
                 throw new Exception("Tiles weren't put in a line!");
 
-            if (start.GetX() < 0 || start.GetY() < 0 || end.GetX() > GameBoard.BOARD_WIDTH || end.GetY() > GameBoard.BOARD_HEIGHT)
-                throw new Exception("Tiles weren't on board!");
+            GameBoard clonedBoard = game.GetBoard().DeepCopy(game.GetID());
 
-            if(start.GetX() <= end.GetX() || start.GetY() <= end.GetY())
-                throw new Exception("End was equal to or before start!");
-
-            //swap blank tiles now
-            if (m_blankReplacements.Count > 0)
+            foreach(BoardPosition pos in m_pieces.Keys)
             {
-                for(int i = 0; i < m_pieces.Count; i++)
-                {
-                    if (m_pieces[i] == BLANK_TILE_NUMBER)
-                        m_pieces[i] = m_blankReplacements.Dequeue();
-
-                    if (m_blankReplacements.Count == 0)
-                        break;
-                }
+                clonedBoard.GetBoardSpace(pos.GetX(), pos.GetY()).SetLetter(m_pieces[pos], m_blankSpots.Contains(pos));
             }
 
-            //if (!GameUtils.IsValidWord(game.GetLanguage(), word))
-                //throw new Exception("Played word isn't valid!");
+            List<PlayedWord> playedWords = GetPlayedWords(clonedBoard, m_pieces, game.GetLanguage());
+
+            if (playedWords.Count == 0)
+                throw new Exception("An invalid word or words were played!");
 
             return true;
         }
 
+        private static List<PlayedWord> GetPlayedWords(GameBoard board, Dictionary<BoardPosition, int> m_pieces, GameLanguages lang)
+        {
+            Enum langEnum = lang.GetAttribute<LanguageAttribute>().GetLangEnum();
+
+            List<PlayedWord> m_playedWords = new List<PlayedWord>();
+            
+            foreach(BoardPosition playedPos in m_pieces.Keys)
+            {
+                List<List<BoardPosition>> looped = loopForWords(board, playedPos);
+                
+                //words found from this single tile
+                foreach(List<BoardPosition> words in looped)
+                {
+                    int rawScore = 0;
+                    int multiplierScore = 0;
+
+                    List<int> wordMultipliers = new List<int>();
+                    List<Zinger> zingers = new List<Zinger>();
+
+                    List<int> rawLetters = new List<int>();
+
+                    //spots that make up word
+                    foreach(BoardPosition pos in words)
+                    {
+                        BoardSpace space = board.GetBoardSpace(pos.GetX(), pos.GetY());
+
+                        int letterNum = space.GetLetter();
+
+                        rawLetters.Add(letterNum);
+
+                        Enum letterEnum = (Enum) Enum.ToObject(langEnum.GetType(), letterNum);
+                        LetterDataAttribute data = letterEnum.GetAttribute<LetterDataAttribute>();
+
+                        rawScore += data.Value;
+
+                        switch (space.GetMultiplier()) {
+                            case BoardSpaceMultipliers.NONE:
+                                multiplierScore += data.Value;
+                                break;
+                            case BoardSpaceMultipliers.DOUBLE_LETTER:
+                                multiplierScore += (data.Value * 2);
+                                break;
+                            case BoardSpaceMultipliers.TRIPLE_LETTER:
+                                multiplierScore += (data.Value * 3);
+                                break;
+                            case BoardSpaceMultipliers.DOUBLE_WORD:
+                                multiplierScore += data.Value;
+                                wordMultipliers.Add(2);
+                                break;
+                            case BoardSpaceMultipliers.TRIPLE_WORD:
+                                multiplierScore += data.Value;
+                                wordMultipliers.Add(3);
+                                break;
+                        }
+
+                        zingers.AddRange(space.GetZingers());
+                    }
+
+                    foreach(int i in wordMultipliers)
+                    {
+                        multiplierScore *= i;
+                    }
+
+                    PlayedWord word = new PlayedWord(words, rawScore, multiplierScore, zingers);
+                    String wordString = GameUtils.StringFromIntList(lang, rawLetters);
+
+                    bool validWord = GameUtils.IsValidWord(lang, wordString);
+
+                    if (validWord && !m_playedWords.Contains(word))
+                        m_playedWords.Add(word);
+                }
+            }
+
+            return m_playedWords;
+        }
+
+        /// <summary>
+        /// loops for words
+        /// </summary>
+        /// <param name="board">the board to check</param>
+        /// <param name="playedPos">played pos of letter</param>
+        /// <returns>words from played letter</returns>
+        private static List<List<BoardPosition>> loopForWords(GameBoard board, BoardPosition playedPos)
+        {
+            List<List<BoardPosition>> words = new List<List<BoardPosition>>();
+
+            for(int x = 0; x < 2; x++)
+            {
+                for (int i = 0; i < 2; i++)
+                {
+                    List<BoardPosition> word = new List<BoardPosition>();
+                    BoardPosition current = playedPos;
+                    int add = 0;
+
+                    while (true)
+                    {
+                        try
+                        {
+                            if (x == 0)
+                                current = new BoardPosition(playedPos.GetX() + add, playedPos.GetY());
+                            else
+                                current = new BoardPosition(playedPos.GetX(), playedPos.GetY() + add);
+
+                            if (!board.GetBoardSpace(current.GetX(), current.GetY()).HasLetter())
+                                break;
+
+
+                            if (i == 0 && !word.Contains(current))
+                                word.Add(current);
+                            else if (!word.Contains(current))
+                                word.Insert(0, current);
+                        }
+
+                        //space probably doesnt exist
+                        catch (Exception)
+                        {
+                            break;
+                        }
+
+                        add += (i == 0 ? 1 : -1);
+                    }
+
+                    if (word.Count > 1 && !words.Contains(word))
+                        words.Add(word);
+                }
+            }
+
+  
+            return words;
+        }
     }
 }

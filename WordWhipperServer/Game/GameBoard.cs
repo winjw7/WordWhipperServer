@@ -16,6 +16,8 @@ namespace WordWhipperServer.Game
 
         private BoardSpace[,] m_spaces = new BoardSpace[BOARD_WIDTH, BOARD_HEIGHT];
 
+        private bool m_centerDoubled;
+
         /// <summary>
         /// Constructor for a default game board
         /// </summary>
@@ -32,6 +34,40 @@ namespace WordWhipperServer.Game
         {
             CreateBoard(centerDouble, true);
             FillWithRandomMultipliers(id);
+        }
+
+        /// <summary>
+        /// Creates a deep copy of the board
+        /// </summary>
+        /// <param name="id">id of the game</param>
+        /// <returns>deep copy</returns>
+        public GameBoard DeepCopy(Guid id)
+        {
+            GameBoard board = new GameBoard(id, m_centerDoubled);
+
+            BoardSpace[,] toCopy = GetBoardSpaces();
+
+            for (int x = 0; x < toCopy.GetLength(0); x++)
+            {
+                for (int y = 0; y < toCopy.GetLength(0); y++)
+                {
+                    BoardSpace space = toCopy[x, y];
+
+                    board.GetBoardSpace(x, y).SetLetter(space.GetLetter());
+                    space.GetZingers().ForEach(z => board.GetBoardSpace(x, y).AddZinger(z));
+                }
+            }
+
+            return board;
+        }
+
+        /// <summary>
+        /// Gets the board spaces on the board
+        /// </summary>
+        /// <returns>board spaces</returns>
+        public BoardSpace[,] GetBoardSpaces()
+        {
+            return m_spaces;
         }
 
         /// <summary>
@@ -59,8 +95,11 @@ namespace WordWhipperServer.Game
         /// <param name="x">x coord</param>
         /// <param name="y">y coord</param>
         /// <returns></returns>
-        private BoardSpace GetBoardSpace(int x, int y)
+        public BoardSpace GetBoardSpace(int x, int y)
         {
+            if (x < 0 || x >= BOARD_WIDTH || y < 0 || y >= BOARD_HEIGHT)
+                throw new Exception("This position is out of bounds!");
+
             return m_spaces[x, y];
         }
 

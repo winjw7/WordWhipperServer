@@ -13,6 +13,7 @@ namespace WordWhipperServer.Game
         private List<Zinger> m_zingers;
         private int m_letter;
         private bool m_isLocked;
+        private bool m_wasBlankLetter;
         private BoardSpaceMultipliers m_mulitplier;
 
         /// <summary>
@@ -24,6 +25,7 @@ namespace WordWhipperServer.Game
             m_letter = 0;
             m_isLocked = false;
             m_mulitplier = multi;
+            m_wasBlankLetter = false;
         }
 
         /// <summary>
@@ -86,12 +88,23 @@ namespace WordWhipperServer.Game
         /// Sets the letter in the space
         /// </summary>
         /// <param name="c">letter to set to</param>
-        public void SetLetter(byte c)
+        /// <param name="wasBlank">whether this is a blank letter</param>
+        public void SetLetter(int c, bool wasBlank = false)
         {
             if (IsLocked())
                 throw new Exception("This tile is locked!");
 
             m_letter = c;
+            m_wasBlankLetter = wasBlank;
+        }
+
+        /// <summary>
+        /// Gets if this is actually a blank tile here
+        /// </summary>
+        /// <returns>is blank letter</returns>
+        public bool IsBlankTile()
+        {
+            return m_wasBlankLetter;
         }
 
         /// <summary>
@@ -119,6 +132,15 @@ namespace WordWhipperServer.Game
         public BoardSpaceMultipliers GetMultiplier()
         {
             return m_mulitplier;
+        }
+
+        /// <summary>
+        /// Gets all zingers on the board space
+        /// </summary>
+        /// <returns></returns>
+        public List<Zinger> GetZingers()
+        {
+            return m_zingers;
         }
     }
 }

@@ -40,6 +40,11 @@ namespace WordWhipperServer.Game
             return m_y;
         }
 
+        public override string ToString()
+        {
+            return (GetX() + ":" + GetY());
+        }
+
         public override bool Equals(object other)
         {
             if (other.GetType() != typeof(BoardPosition))
@@ -52,7 +57,7 @@ namespace WordWhipperServer.Game
 
         public override int GetHashCode()
         {
-            return (GetX() + ":" + GetY()).GetHashCode();
+            return ToString().GetHashCode();
         }
     }
 }

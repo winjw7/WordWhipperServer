@@ -252,5 +252,14 @@ namespace WordWhipperServer.Game
         {
             return GetStatus() == GameStatus.PENDING_PLAYER_MOVE && GetPlayersTurnID() == id;
         }
+
+        /// <summary>
+        /// Gets the game board
+        /// </summary>
+        /// <returns>game board</returns>
+        public GameBoard GetBoard()
+        {
+            return m_board;
+        }
     }
 }

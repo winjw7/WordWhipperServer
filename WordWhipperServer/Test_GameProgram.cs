@@ -28,7 +28,9 @@ namespace WordWhipperServer
             game = new GameInstance(flags, GameLanguages.ENGLISH);
             game.PrintBoardToConsole();
 
-            Console.WriteLine("Tile Bag: " + game.GetTileBag().ToString());
+            Console.WriteLine("\nTile Bag: " + game.GetTileBag().ToString());
+
+            Console.WriteLine("\nIs valid word test for english `dog`: " + GameUtils.IsValidWord(GameLanguages.ENGLISH, "dog"));
         }
     }
 }

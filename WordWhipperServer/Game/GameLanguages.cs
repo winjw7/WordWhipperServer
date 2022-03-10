@@ -9,7 +9,7 @@ namespace WordWhipperServer.Game
     /// </summary>
     public enum GameLanguages
     {
-        [Language(new LettersForEnglish())]
+        [Language(new LettersForEnglish(), "DictionaryForEnglish")]
         ENGLISH
     }
 }

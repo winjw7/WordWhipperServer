@@ -16,18 +16,18 @@ namespace WordWhipperServer.Game
         /// <summary>
         /// Constructor for a default game board
         /// </summary>
-        public GameBoard()
+        public GameBoard(bool centerDouble)
         {
-            CreateBoard();
+            CreateBoard(centerDouble);
         }
 
         /// <summary>
         /// Constructor for a random game board
         /// </summary>
         /// <param name="id">game id used to generate randomness</param>
-        public GameBoard(Guid id)
+        public GameBoard(Guid id, bool centerDouble)
         {
-            CreateBoard(true);
+            CreateBoard(centerDouble, true);
             FillWithRandomMultipliers(id);
         }
 
@@ -35,7 +35,7 @@ namespace WordWhipperServer.Game
         /// Fills all spots on the board with empty spaces
         /// </summary>
         /// <param name="random">multipliers are random?</param>
-        private void CreateBoard(bool random = false)
+        private void CreateBoard(bool centerDouble, bool random = false)
         {
             for(int x = 0; x < BOARD_WIDTH; x++)
             {
@@ -45,6 +45,9 @@ namespace WordWhipperServer.Game
                     m_spaces[x,y] = new BoardSpace(mult);
                 }
             }
+
+            if (!centerDouble && !random)
+                m_spaces[7, 7].UpdateMultiplier(BoardSpaceMultipliers.NONE);
         }
 
         /// <summary>

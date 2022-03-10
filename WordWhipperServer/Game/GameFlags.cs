@@ -22,6 +22,11 @@ namespace WordWhipperServer.Game
         /// <summary>
         /// Disables zingers
         /// </summary>
-        DISABLE_ZINGERS
+        DISABLE_ZINGERS,
+        
+        /// <summary>
+        /// Cancels first word being double
+        /// </summary>
+        NO_DOUBLE_FIRST_WORD,
     }
 }

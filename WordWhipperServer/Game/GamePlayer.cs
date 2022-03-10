@@ -11,10 +11,10 @@ namespace WordWhipperServer.Game
     /// </summary>
     public class GamePlayer
     {
-        private const int MAX_TILES = 7;
+        public const int MAX_TILES = 7;
 
         private Guid m_id;
-        private List<char> m_letters;
+        private List<int> m_letters;
         private List<ZingerTypes> m_zingers;
         private int m_score;
 
@@ -25,7 +25,7 @@ namespace WordWhipperServer.Game
         public GamePlayer(Guid id)
         {
             m_id = id;
-            m_letters = new List<char>();
+            m_letters = new List<int>();
             m_zingers = new List<ZingerTypes>();
             m_score = 0;
         }
@@ -37,6 +37,18 @@ namespace WordWhipperServer.Game
         public int GetScore()
         {
             return m_score;
+        }
+
+        /// <summary>
+        /// Adds a letter to a player
+        /// </summary>
+        /// <param name="letter"></param>
+        public void AddLetter(int letter)
+        {
+            if (GetLetterCount() == MAX_TILES)
+                throw new Exception("This player can't have any more tiles!");
+
+            m_letters.Add(letter);
         }
 
         /// <summary>

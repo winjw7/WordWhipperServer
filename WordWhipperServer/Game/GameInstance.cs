@@ -10,8 +10,8 @@ namespace WordWhipperServer.Game
     {
         private Guid m_id;
 
-        private const byte MIN_PLAYERS = 2;
-        private const byte MAX_PLAYERS = 4;
+        private const int MIN_PLAYERS = 2;
+        private const int MAX_PLAYERS = 4;
 
         private GameBoard m_board;
         private List<GamePlayer> m_players;
@@ -23,6 +23,8 @@ namespace WordWhipperServer.Game
         private TileBag m_tileBag;
 
         private GameStatus m_status;
+
+        private List<ChatMessage> m_messages;
 
         private int m_turnIndex = 0;
 
@@ -38,6 +40,7 @@ namespace WordWhipperServer.Game
             m_id = Guid.NewGuid();
             m_language = GameLanguages.ENGLISH;
             m_status = GameStatus.WAITING_FOR_PLAYERS_TO_ACCEPT;
+            m_messages = new List<ChatMessage>();
         }
 
         /// <summary>
@@ -46,7 +49,7 @@ namespace WordWhipperServer.Game
         public GameInstance()
         {
             InitialSetup();
-            m_board = new GameBoard();
+            m_board = new GameBoard(true);
             m_tileBag = new TileBag(GameLanguages.ENGLISH);
         }
 
@@ -68,13 +71,16 @@ namespace WordWhipperServer.Game
             m_gameFlags = flags;
             m_language = lang;
 
+            bool doubleCenter = flags.Contains(GameFlags.NO_DOUBLE_FIRST_WORD);
+
             if (flags.Contains(GameFlags.RANDOM_BOARD_MULTIPLIERS))
-                m_board = new GameBoard(GetID());
+                m_board = new GameBoard(GetID(), doubleCenter);
             else
-                m_board = new GameBoard();
+                m_board = new GameBoard(doubleCenter);
 
             if (flags.Contains(GameFlags.RANDOM_START))
-                m_turnIndex = new Random().Next(0, MAX_PLAYERS);
+                m_turnIndex = new Random(m_id.ToString().GetHashCode()).Next(0, MAX_PLAYERS);
+
 
             m_tileBag = new TileBag(lang);
         }
@@ -133,6 +139,15 @@ namespace WordWhipperServer.Game
         public int GetPlayerCount()
         {
             return m_players.Count;
+        }
+
+        /// <summary>
+        /// Gets all messages sent during a game
+        /// </summary>
+        /// <returns>message list</returns>
+        public List<ChatMessage> GetChatMessages()
+        {
+            return m_messages;
         }
 
         /// <summary>
@@ -195,5 +210,7 @@ namespace WordWhipperServer.Game
 
             return m_players[m_turnIndex].GetID();
         }
+
+
     }
 }

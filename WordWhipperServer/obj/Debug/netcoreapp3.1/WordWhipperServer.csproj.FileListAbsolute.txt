@@ -11,3 +11,4 @@ C:\Users\Justin\source\repos\WordWhipperServer\WordWhipperServer\bin\Debug\netco
 C:\Users\Justin\source\repos\WordWhipperServer\WordWhipperServer\obj\Debug\netcoreapp3.1\WordWhipperServer.dll
 C:\Users\Justin\source\repos\WordWhipperServer\WordWhipperServer\obj\Debug\netcoreapp3.1\WordWhipperServer.pdb
 C:\Users\Justin\source\repos\WordWhipperServer\WordWhipperServer\obj\Debug\netcoreapp3.1\WordWhipperServer.genruntimeconfig.cache
+C:\Users\Justin\source\repos\WordWhipperServer\WordWhipperServer\bin\Debug\netcoreapp3.1\Data\DictionaryForEnglish.txt

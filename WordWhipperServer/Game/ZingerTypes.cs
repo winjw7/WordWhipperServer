@@ -9,10 +9,19 @@ namespace WordWhipperServer.Game
     /// </summary>
     public enum ZingerTypes
     {
-        [ZingerData(MaxAllowed = 1)]
+        [ZingerData(MaxAllowed = 1, PlayedOnTile = true)]
         EXPLODE_LETTER,
 
-        [ZingerData(MaxAllowed = 1)]
+        [ZingerData(MaxAllowed = 1, PlayedOnTile = true)]
         EXPLODE_RANDOM_LETTER,
+
+        [ZingerData(MaxAllowed = 1, PlayedOnTile = true)]
+        EXPLODE_WORD,
+
+        [ZingerData(MaxAllowed = 1, PlayedOnTile = false)]
+        EXPLODE_LETTER_EMPTY,
+
+        [ZingerData(MaxAllowed = 1, PlayedOnTile = false)]
+        EXPLODE_TILE_EMPTY,
     }
 }

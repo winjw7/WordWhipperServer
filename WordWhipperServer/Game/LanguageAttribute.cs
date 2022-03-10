@@ -4,18 +4,28 @@ using System.Text;
 
 namespace WordWhipperServer.Game
 {
+    /// <summary>
+    /// What enum this language is associated with
+    /// </summary>
     public class LanguageAttribute : Attribute
     {
-        private Enum langEnum;
+        private Enum m_langEnum;
+        private String m_dictionaryPath;
 
-        public LanguageAttribute(object e)
+        public LanguageAttribute(object e, string path)
         {
-            langEnum = e as Enum;
+            m_langEnum = e as Enum;
+            m_dictionaryPath = path;
         }
 
         public Enum GetLangEnum()
         {
-            return langEnum;
+            return m_langEnum;
+        }
+
+        public String GetDictionaryPath()
+        {
+            return m_dictionaryPath;
         }
     }
 }

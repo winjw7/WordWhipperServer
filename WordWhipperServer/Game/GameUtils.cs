@@ -29,5 +29,25 @@ namespace WordWhipperServer.Game
 
             return false;
         }
+
+        /// <summary>
+        /// Converts a list of ints to a string
+        /// </summary>
+        /// <param name="lang">Language to use</param>
+        /// <param name="word">word list</param>
+        /// <returns>string</returns>
+        public static string StringFromIntList(GameLanguages lang, List<int> word)
+        {
+            string str = "";
+            
+            Enum convert = lang.GetAttribute<LanguageAttribute>().GetLangEnum();
+
+            foreach(int i in word)
+            {
+                str += Enum.GetName(convert.GetType(), i);
+            }
+
+            return str;
+        }
     }
 }

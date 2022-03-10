@@ -26,7 +26,8 @@ namespace WordWhipperServer.Game
 
         private List<ChatMessage> m_messages;
 
-        private int m_turnIndex = 0;
+        private int m_whichPlayerTurn;
+        private int m_turnNumber;
 
         /// <summary>
         /// Initializes all of the lists and variables
@@ -41,6 +42,8 @@ namespace WordWhipperServer.Game
             m_language = GameLanguages.ENGLISH;
             m_status = GameStatus.WAITING_FOR_PLAYERS_TO_ACCEPT;
             m_messages = new List<ChatMessage>();
+            m_whichPlayerTurn = 0;
+            m_turnNumber = 0;
         }
 
         /// <summary>
@@ -79,7 +82,7 @@ namespace WordWhipperServer.Game
                 m_board = new GameBoard(doubleCenter);
 
             if (flags.Contains(GameFlags.RANDOM_START))
-                m_turnIndex = new Random(m_id.ToString().GetHashCode()).Next(0, MAX_PLAYERS);
+                m_whichPlayerTurn = new Random(m_id.ToString().GetHashCode()).Next(0, MAX_PLAYERS);
 
 
             m_tileBag = new TileBag(lang);
@@ -203,14 +206,39 @@ namespace WordWhipperServer.Game
         /// Gets the id of the player who is up
         /// </summary>
         /// <returns></returns>
-        public Guid GetPlayersTurnID()
+        private Guid GetPlayersTurnID()
         {
-            if (m_players.Count <= m_turnIndex - 1)
+            if (m_players.Count <= m_whichPlayerTurn - 1)
                 throw new Exception("The player who is starting isn't in the game yet!");
 
-            return m_players[m_turnIndex].GetID();
+            return m_players[m_whichPlayerTurn].GetID();
         }
 
+        /// <summary>
+        /// Gets if this is the first turn
+        /// </summary>
+        /// <returns>first turn</returns>
+        public bool IsFirstTurn()
+        {
+            return m_turnNumber == 0;
+        }
 
+        /// <summary>
+        /// Gets the tiles of whos turn it is
+        /// </summary>
+        /// <returns>tile list</returns>
+        public List<int> GetCurrentPlayerTiles() {
+            return m_players[m_whichPlayerTurn].GetLetters();
+        }
+
+        /// <summary>
+        /// Checks if a player can play a move at this time
+        /// </summary>
+        /// <param name="id">id of the player</param>
+        /// <returns>can play move</returns>
+        public bool CanPlayMoveNow(Guid id)
+        {
+            return GetStatus() == GameStatus.PENDING_PLAYER_MOVE && GetPlayersTurnID() == id;
+        }
     }
 }

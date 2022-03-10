@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace WordWhipperServer.Util
@@ -27,6 +28,11 @@ namespace WordWhipperServer.Util
                 list[k] = list[n];
                 list[n] = value;
             }
+        }
+
+        public static bool ContainsAllItems<T>(this List<T> a, List<T> b)
+        {
+            return !b.Except(a).Any();
         }
     }
 }

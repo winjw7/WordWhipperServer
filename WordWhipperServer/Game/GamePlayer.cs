@@ -104,5 +104,14 @@ namespace WordWhipperServer.Game
         {
             return m_letters.Count;
         }
+
+        /// <summary>
+        /// Gets all letters a player has
+        /// </summary>
+        /// <returns>letter list</returns>
+        public List<int> GetLetters()
+        {
+            return m_letters;
+        }
     }
 }

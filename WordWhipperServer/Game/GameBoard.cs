@@ -8,8 +8,11 @@ namespace WordWhipperServer.Game
     /// </summary>
     public class GameBoard
     {
-        private static int BOARD_WIDTH = 15;
-        private static int BOARD_HEIGHT = 15;
+        public const int BOARD_WIDTH = 15;
+        public const int BOARD_HEIGHT = 15;
+
+        public const int BOARD_CENTER_X = 7;
+        public const int BOARD_CENTER_Y = 7;
 
         private BoardSpace[,] m_spaces = new BoardSpace[BOARD_WIDTH, BOARD_HEIGHT];
 
@@ -47,7 +50,7 @@ namespace WordWhipperServer.Game
             }
 
             if (!centerDouble && !random)
-                m_spaces[7, 7].UpdateMultiplier(BoardSpaceMultipliers.NONE);
+                m_spaces[BOARD_CENTER_X, BOARD_CENTER_Y].UpdateMultiplier(BoardSpaceMultipliers.NONE);
         }
 
         /// <summary>

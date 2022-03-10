@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace WordWhipperServer.Game
 {
@@ -21,7 +20,7 @@ namespace WordWhipperServer.Game
         private GameLanguages m_language;
 
         private List<GameFlags> m_gameFlags;
-        private List<char> m_tileBag;
+        private List<int> m_tileBag;
 
         /// <summary>
         /// Initializes all of the lists and variables
@@ -33,7 +32,7 @@ namespace WordWhipperServer.Game
             m_players = new List<GamePlayer>();
             m_gameFlags = new List<GameFlags>();
             m_players = new List<GamePlayer>();
-            m_tileBag = new List<char>();
+            m_tileBag = new List<int>();
             m_id = Guid.NewGuid();
             m_language = GameLanguages.ENGLISH;
         }
@@ -47,10 +46,10 @@ namespace WordWhipperServer.Game
         }
 
         /// <summary>
-        /// Creates a new game with a variable player amount
+        /// Creates a new game with settings
         /// </summary>
         /// <param name="playerCount">the amount of players</param>
-        public Game(List<GameFlags> flags, int playerCount = 2)
+        public Game(List<GameFlags> flags, GameLanguages lang, int playerCount = 2)
         {
             if (playerCount < MIN_PLAYERS)
                 throw new Exception($"There must be at least {MIN_PLAYERS} players in a game!");
@@ -62,6 +61,7 @@ namespace WordWhipperServer.Game
 
             m_maxPlayers = playerCount;
             m_gameFlags = flags;
+            m_language = lang;
         }
 
         /// <summary>

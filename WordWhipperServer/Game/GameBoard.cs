@@ -27,6 +27,7 @@ namespace WordWhipperServer.Game
         public GameBoard(Guid id)
         {
             CreateBoard(true);
+            FillWithRandomMultipliers(id);
         }
 
         /// <summary>
@@ -67,7 +68,7 @@ namespace WordWhipperServer.Game
             FillMultiplier(r, GameBoardUtils.GetDoubleLetterSpotAmounts(), BoardSpaceMultipliers.DOUBLE_LETTER);
             FillMultiplier(r, GameBoardUtils.GetDoubleWordSpotAmounts(), BoardSpaceMultipliers.DOUBLE_WORD);
             FillMultiplier(r, GameBoardUtils.GetTripleLetterSpotAmounts(), BoardSpaceMultipliers.TRIPLE_LETTER);
-            FillMultiplier(r, GameBoardUtils.GetTripleLetterSpotAmounts(), BoardSpaceMultipliers.TRIPLE_LETTER);
+            FillMultiplier(r, GameBoardUtils.GetTripleLetterSpotAmounts(), BoardSpaceMultipliers.TRIPLE_WORD);
         }
 
         /// <summary>

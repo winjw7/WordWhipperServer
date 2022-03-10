@@ -11,7 +11,7 @@ namespace WordWhipperServer.Game
     class BoardSpace
     {
         private List<Zinger> m_zingers;
-        private byte m_letter;
+        private int m_letter;
         private bool m_isLocked;
         private BoardSpaceMultipliers m_mulitplier;
 
@@ -98,7 +98,7 @@ namespace WordWhipperServer.Game
         /// Gets the letter in the board space
         /// </summary>
         /// <returns>letter</returns>
-        public byte GetLetter()
+        public int GetLetter()
         {
             return m_letter;
         }

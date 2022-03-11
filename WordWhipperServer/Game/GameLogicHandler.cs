@@ -93,7 +93,7 @@ namespace WordWhipperServer.Game
 
             foreach (BoardPosition pos in m_pieces.Keys)
             {
-                game.GetBoard().GetBoardSpace(pos.GetX(), pos.GetY()).SetMultiplierUsed(true);
+                game.GetBoard().GetBoardSpace(pos.GetX(), pos.GetY()).SetLocked(true);
             }
 
             game.PlayerDidTurn(m_pieces.Values.ToList(), scoreToAdd);

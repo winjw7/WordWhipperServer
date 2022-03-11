@@ -14,7 +14,7 @@ namespace WordWhipperServer.Game
         private int m_letter;
         private bool m_isLocked;
         private bool m_wasBlankLetter;
-        private bool m_multiplierUsed;
+
         private BoardSpaceMultipliers m_mulitplier;
 
         /// <summary>
@@ -27,7 +27,6 @@ namespace WordWhipperServer.Game
             m_isLocked = false;
             m_mulitplier = multi;
             m_wasBlankLetter = false;
-            m_multiplierUsed = false;
         }
 
         /// <summary>
@@ -133,7 +132,7 @@ namespace WordWhipperServer.Game
         /// <returns>multiplier</returns>
         public BoardSpaceMultipliers GetMultiplier()
         {
-            if (m_multiplierUsed)
+            if (m_isLocked)
                 return BoardSpaceMultipliers.NONE;
 
             return m_mulitplier;
@@ -143,9 +142,9 @@ namespace WordWhipperServer.Game
         /// Sets whether or not the multiplier has been used
         /// </summary>
         /// <param name="value">true or false</param>
-        public void SetMultiplierUsed(bool value)
+        public void SetLocked(bool value)
         {
-            m_multiplierUsed = value;
+            m_isLocked = true;
         }
 
         /// <summary>

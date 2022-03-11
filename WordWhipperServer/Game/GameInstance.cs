@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using WordWhipperServer.Util;
 
 namespace WordWhipperServer.Game
 {
@@ -31,6 +32,8 @@ namespace WordWhipperServer.Game
         private int m_turnNumber;
 
         private int m_turnsPassed;
+
+        private List<Guid> m_winners;
 
         /// <summary>
         /// Initializes all of the lists and variables
@@ -308,9 +311,14 @@ namespace WordWhipperServer.Game
         public void PlayerTradeTiles(Guid player, List<int> tiles)
         {
             GamePlayer p = m_players[m_whichPlayerTurn];
+
+            if (!p.GetLetters().ContainsAllItems(tiles))
+                throw new Exception("This player doesn't have all the tiles they want to trade in!");
+
             tiles.ForEach(x => p.RemoveLetter(x));
             m_tileBag.AddTiles(tiles);
             DrawTilesForPlayer(player, tiles.Count);
+            NextPlayersTurn();
         }
 
         /// <summary>
@@ -367,8 +375,54 @@ namespace WordWhipperServer.Game
             //every player has passed, end
             if(m_turnsPassed == GetMaxPlayers())
             {
-
+                EndGame();
             }
+        }
+
+        /// <summary>
+        /// Ends a game and returns winners
+        /// </summary>
+        /// <returns>winners</returns>
+        public void EndGame()
+        {
+            if (m_status == GameStatus.COMPLETED)
+                throw new Exception("The game is already over!");
+
+            m_status = GameStatus.COMPLETED;
+
+            m_winners = new List<Guid>();
+            int winningScore = -1;
+
+            foreach(GamePlayer player in m_players)
+            {
+                int playerScore = player.GetScore();
+
+                if (playerScore > winningScore)
+                {
+                    m_winners.Clear();
+                    m_winners.Add(player.GetID());
+                    winningScore = player.GetScore();
+                }
+
+                else if (playerScore == winningScore)
+                    m_winners.Add(player.GetID());
+            }
+        }
+
+        public int GetWinningScore()
+        {
+            if (m_status != GameStatus.COMPLETED)
+                throw new Exception("The game is not over!");
+
+            return GetPlayer(m_winners.First()).GetScore();
+        }
+
+        public List<Guid> GetWinners()
+        {
+            if (m_status != GameStatus.COMPLETED)
+                throw new Exception("The game is not over!");
+
+            return m_winners;
         }
     }
 }

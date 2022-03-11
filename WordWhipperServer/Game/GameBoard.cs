@@ -137,7 +137,7 @@ namespace WordWhipperServer.Game
 
                     BoardSpace space = GetBoardSpace(x, y);
 
-                    if (space.GetMultiplier() == BoardSpaceMultipliers.NONE)
+                    if (space.GetTrueMultiplier() == BoardSpaceMultipliers.NONE)
                     {
                         space.UpdateMultiplier(type);
                         break;
@@ -157,7 +157,7 @@ namespace WordWhipperServer.Game
                 {
                     BoardSpace space = GetBoardSpace(x, y);
 
-                    switch (space.GetMultiplier()) {
+                    switch (space.GetTrueMultiplier()) {
                         case BoardSpaceMultipliers.NONE:
                             Console.ForegroundColor = ConsoleColor.Gray;
                             break;

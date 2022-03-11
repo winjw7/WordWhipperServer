@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using WordWhipperServer.Game;
 
 namespace WordWhipperServer
@@ -55,6 +56,14 @@ namespace WordWhipperServer
                 GameLogicHandler.ExecuteMove(game, playerTwoID, playedTiles, new List<BoardPosition>());
                 Console.WriteLine("Executed Move!");
                 game.PrintBoardToConsole();
+
+                GameLogicHandler.SkipTurn(game, playerOneID);
+                GameLogicHandler.SkipTurn(game, playerTwoID);
+
+                if(game.GetStatus() == GameStatus.COMPLETED)
+                {
+                    Console.WriteLine("\nThe game has eneded! Winnings Players: " + String.Join(",", game.GetWinners().Select(g => g.ToString()).ToArray()) + " with a score of: " + game.GetWinningScore());
+                }
             }
 
             catch(Exception ex)

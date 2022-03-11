@@ -57,8 +57,8 @@ namespace WordWhipperServer.Game
         /// <param name="letter"></param>
         public void AddLetter(int letter)
         {
-            if (GetLetterCount() == MAX_TILES)
-                throw new Exception("This player can't have any more tiles!");
+            //if (GetLetterCount() == MAX_TILES)
+                //throw new Exception("This player can't have any more tiles!");
 
             m_letters.Add(letter);
         }

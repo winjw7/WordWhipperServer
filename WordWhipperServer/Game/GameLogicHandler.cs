@@ -91,7 +91,53 @@ namespace WordWhipperServer.Game
             int scoreToAdd = 0;
             playedWords.ForEach(x => scoreToAdd += x.GetMultiplierScore());
 
+            foreach (BoardPosition pos in m_pieces.Keys)
+            {
+                game.GetBoard().GetBoardSpace(pos.GetX(), pos.GetY()).SetMultiplierUsed(true);
+            }
+
             game.PlayerDidTurn(m_pieces.Values.ToList(), scoreToAdd);
+        }
+
+        /// <summary>
+        /// Skips a turn
+        /// </summary>
+        /// <param name="game">game</param>
+        /// <param name="playerID">player id</param>
+        public static void SkipTurn(GameInstance game, Guid playerID)
+        {
+            if (!game.CanPlayMoveNow(playerID))
+                throw new Exception("This player can't make a move right now!");
+
+            game.PlayerPassTurn();
+        }
+
+        /// <summary>
+        /// Trades in tiles for a player
+        /// </summary>
+        /// <param name="game">game</param>
+        /// <param name="playerID">player id</param>
+        /// <param name="tiles">tiles to trade</param>
+        public static void TradeTiles(GameInstance game, Guid playerID, List<int> tiles)
+        {
+            if (!game.CanPlayMoveNow(playerID))
+                throw new Exception("This player can't make a move right now!");
+
+            //May throw exception if tried to trade in tiles they don't have
+            game.PlayerTradeTiles(playerID, tiles);
+        }
+
+        /// <summary>
+        /// Makes a player pass their turn
+        /// </summary>
+        /// <param name="game">game</param>
+        /// <param name="playerID">player id</param>
+        public static void PassTurn(GameInstance game, Guid playerID)
+        {
+            if (!game.CanPlayMoveNow(playerID))
+                throw new Exception("This player can't make a move right now!");
+
+            game.PlayerPassTurn();
         }
 
         /// <summary>

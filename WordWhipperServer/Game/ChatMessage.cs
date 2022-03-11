@@ -7,6 +7,7 @@ namespace WordWhipperServer.Game
     /// <summary>
     /// A message sent in a game
     /// </summary>
+    [Serializable]
     public class ChatMessage
     {
         private Guid m_sender;

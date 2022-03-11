@@ -8,6 +8,7 @@ namespace WordWhipperServer.Game
     /// <summary>
     /// An instance of a game
     /// </summary>
+    [Serializable]
     public class GameInstance
     {
         private Guid m_id;

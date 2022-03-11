@@ -8,6 +8,7 @@ namespace WordWhipperServer.Game
     /// <summary>
     /// a bag that is used for a game
     /// </summary>
+    [Serializable]
     public class TileBag
     {
         private Queue<int> m_tiles;

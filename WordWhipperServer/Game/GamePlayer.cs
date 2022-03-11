@@ -9,6 +9,7 @@ namespace WordWhipperServer.Game
     /// <summary>
     /// The player of a game
     /// </summary>
+    [Serializable]
     public class GamePlayer
     {
         public const int MAX_TILES = 7;

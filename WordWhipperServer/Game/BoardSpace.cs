@@ -8,6 +8,7 @@ namespace WordWhipperServer.Game
     /// <summary>
     /// A spot on a game board
     /// </summary>
+    [Serializable]
     public class BoardSpace
     {
         private List<Zinger> m_zingers;

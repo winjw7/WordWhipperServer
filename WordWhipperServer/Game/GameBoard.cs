@@ -6,6 +6,7 @@ namespace WordWhipperServer.Game
     /// <summary>
     /// A board associated with a game
     /// </summary>
+    [Serializable]
     public class GameBoard
     {
         public const int BOARD_WIDTH = 15;
@@ -24,6 +25,7 @@ namespace WordWhipperServer.Game
         public GameBoard(bool centerDouble)
         {
             CreateBoard(centerDouble);
+            m_centerDoubled = centerDouble;
         }
 
         /// <summary>
@@ -34,6 +36,7 @@ namespace WordWhipperServer.Game
         {
             CreateBoard(centerDouble, true);
             FillWithRandomMultipliers(id);
+            m_centerDoubled = centerDouble;
         }
 
         /// <summary>

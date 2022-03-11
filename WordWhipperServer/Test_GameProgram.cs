@@ -67,6 +67,8 @@ namespace WordWhipperServer
                 {
                     Console.WriteLine("\nThe game has eneded! Winnings Players: " + String.Join(",", game.GetWinners().Select(g => g.ToString()).ToArray()) + " with a score of: " + game.GetWinningScore());
                 }
+
+                //SaveManager.SaveGame(game);
             }
 
             catch(Exception ex)

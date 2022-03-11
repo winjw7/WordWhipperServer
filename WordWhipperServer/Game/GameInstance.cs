@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace WordWhipperServer.Game
 {
@@ -29,6 +30,8 @@ namespace WordWhipperServer.Game
         private int m_whichPlayerTurn;
         private int m_turnNumber;
 
+        private int m_turnsPassed;
+
         /// <summary>
         /// Initializes all of the lists and variables
         /// </summary>
@@ -44,6 +47,7 @@ namespace WordWhipperServer.Game
             m_messages = new List<ChatMessage>();
             m_whichPlayerTurn = 0;
             m_turnNumber = 0;
+            m_turnsPassed = 0;
         }
 
         /// <summary>
@@ -106,6 +110,7 @@ namespace WordWhipperServer.Game
                 throw new Exception("This game is already full!");
 
             m_players.Add(new GamePlayer(id));
+            DrawTilesForPlayer(id, GamePlayer.MAX_TILES);
 
             if (IsFull())
                 m_status = GameStatus.PENDING_PLAYER_MOVE;
@@ -236,11 +241,34 @@ namespace WordWhipperServer.Game
         }
 
         /// <summary>
+        /// Checks if the game contains a player
+        /// </summary>
+        /// <param name="id">the id of the player</param>
+        /// <returns>contains player</returns>
+        public bool ContainsPlayer(Guid id)
+        {
+            return m_players.Where(x => x.GetID() == id).Count() == 1;
+        }
+
+        /// <summary>
         /// Gets the tiles of whos turn it is
         /// </summary>
         /// <returns>tile list</returns>
-        public List<int> GetCurrentPlayerTiles() {
-            return m_players[m_whichPlayerTurn].GetLetters();
+        public List<int> GetPlayerTiles(Guid id) {
+            return GetPlayer(id).GetLetters();
+        }
+
+        /// <summary>
+        /// Gets a player from the game
+        /// </summary>
+        /// <param name="id">id of the player</param>
+        /// <returns>the player</returns>
+        public GamePlayer GetPlayer(Guid id)
+        {
+            if (!ContainsPlayer(id))
+                throw new Exception("This player isn't in this game!");
+
+            return m_players.Where(x => x.GetID() == id).First();
         }
 
         /// <summary>
@@ -274,21 +302,59 @@ namespace WordWhipperServer.Game
         }
 
         /// <summary>
-        /// A player did a turn
+        /// Trades tiles in for a player
         /// </summary>
-        public void PlayerDidTurn(List<int> tiles, int scoreToAdd)
+        /// <param name="tiles">tiles to trade in</param>
+        public void PlayerTradeTiles(Guid player, List<int> tiles)
         {
-            tiles.ForEach(x => m_players[m_whichPlayerTurn].RemoveLetter(x));
+            GamePlayer p = m_players[m_whichPlayerTurn];
+            tiles.ForEach(x => p.RemoveLetter(x));
+            m_tileBag.AddTiles(tiles);
+            DrawTilesForPlayer(player, tiles.Count);
+        }
 
-            for(int i = 0; i < tiles.Count; i++)
+        /// <summary>
+        /// Draws tiles for a player from the bag
+        /// </summary>
+        /// <param name="count">amount of tiles to draw</param>
+        public void DrawTilesForPlayer(Guid id, int count)
+        {
+            if (!ContainsPlayer(id))
+                throw new Exception("This player isn't in this game!");
+
+            GamePlayer p = m_players.Where(x => x.GetID() == id).First();
+
+            for (int i = 0; i < count; i++)
             {
                 if (GetTileBag().IsEmpty())
                     break;
 
-                m_players[m_whichPlayerTurn].AddLetter(GetTileBag().DrawLetter());
+                p.AddLetter(GetTileBag().DrawLetter());
             }
+        }
 
-            m_players[m_whichPlayerTurn].AddScore(scoreToAdd);
+        /// <summary>
+        /// A player passes their turn
+        /// </summary>
+        public void PlayerPassTurn()
+        {
+            m_turnsPassed++;
+
+            NextPlayersTurn();
+        }
+
+        /// <summary>
+        /// A player did a turn
+        /// </summary>
+        public void PlayerDidTurn(List<int> tiles, int scoreToAdd)
+        {
+            GamePlayer p = m_players[m_whichPlayerTurn];
+            tiles.ForEach(x => p.RemoveLetter(x));
+
+            DrawTilesForPlayer(p.GetID(), tiles.Count);
+
+            p.AddScore(scoreToAdd);
+            m_turnsPassed = 0;
 
             NextPlayersTurn();
         }
@@ -298,7 +364,11 @@ namespace WordWhipperServer.Game
         /// </summary>
         private void CheckEndGame()
         {
+            //every player has passed, end
+            if(m_turnsPassed == GetMaxPlayers())
+            {
 
+            }
         }
     }
 }

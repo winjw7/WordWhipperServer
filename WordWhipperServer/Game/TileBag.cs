@@ -64,6 +64,16 @@ namespace WordWhipperServer.Game
         }
 
         /// <summary>
+        /// Adds tiles to the bag, used when player trades in tiles
+        /// </summary>
+        /// <param name="tiles">tiles to add</param>
+        public void AddTiles(List<int> tiles)
+        {
+            tiles.ForEach(x => m_tiles.Enqueue(x));
+            Shuffle();
+        }
+
+        /// <summary>
         /// Shuffles the tile bag, call if put tiles back in
         /// </summary>
         private void Shuffle()

@@ -409,6 +409,10 @@ namespace WordWhipperServer.Game
             }
         }
 
+        /// <summary>
+        /// Gets the winning score of the game
+        /// </summary>
+        /// <returns>winning score</returns>
         public int GetWinningScore()
         {
             if (m_status != GameStatus.COMPLETED)
@@ -417,6 +421,10 @@ namespace WordWhipperServer.Game
             return GetPlayer(m_winners.First()).GetScore();
         }
 
+        /// <summary>
+        /// gets the winners of a game
+        /// </summary>
+        /// <returns>winners</returns>
         public List<Guid> GetWinners()
         {
             if (m_status != GameStatus.COMPLETED)

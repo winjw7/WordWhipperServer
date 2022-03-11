@@ -58,9 +58,12 @@ namespace WordWhipperServer
                 game.PrintBoardToConsole();
 
                 GameLogicHandler.SkipTurn(game, playerOneID);
-                GameLogicHandler.SkipTurn(game, playerTwoID);
+                Console.WriteLine("Skiped turn!");
 
-                if(game.GetStatus() == GameStatus.COMPLETED)
+                GameLogicHandler.SkipTurn(game, playerTwoID);
+                Console.WriteLine("Skiped turn!");
+
+                if (game.GetStatus() == GameStatus.COMPLETED)
                 {
                     Console.WriteLine("\nThe game has eneded! Winnings Players: " + String.Join(",", game.GetWinners().Select(g => g.ToString()).ToArray()) + " with a score of: " + game.GetWinningScore());
                 }
